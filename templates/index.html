@@ -49,7 +49,7 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
      <div class="container">
-        <form>
+        <form action="/" method="POST">
             <div class="form-group">
               <label for="title">To Do Title</label>
               <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
@@ -77,24 +77,13 @@
             <tbody>
             {% for todo in allTodo %}
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">{{loop.index}}</th>#todo.sno can also be used .when a row in db gets deleted the next row should be continue achieved through loop.index
                 <td>{{todo.title}}</td>
                 <td>{{todo.desc}}</td>
                 <td>{{todo.date_created}}</td>
+                <td>{{todo}}</td>
               </tr>
               {% endfor %}
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
             </tbody>
           </table>
      </div>
