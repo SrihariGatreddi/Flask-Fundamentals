@@ -6,29 +6,29 @@
 
     <!-- Optional JavaScript; choose one of the two! -->
      <div class="container">
-        <form action="/" method="POST">
+        <form action="/update/{{todo.sno}}" method="POST">
             <div class="form-group">
-              <label for="title">To Do Title</label>
+              <label for="title">Title to be Updated</label>
               <input type="text" name="title" class="form-control" id="title" aria-describedby="emailHelp">
               
             </div>
             <div class="form-group">
-              <label for="desc">To Do Description</label>
+              <label for="desc">Description to be updated</label>
               <input type="text" name="desc" class="form-control" id="desc">
             </div>
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Update</button>
           </form>
      </div>
      <div class="container my-3">
-        <h2>Update your Todos</h2>
+        <h2>Updated Todos</h2>
         
           {% if allTodo|length ==0 %}
           <div class="alert alert-dark" role="alert">
            No TODOs found !! Add your first todo.
           </div>
           {% else %}
-            <table class="table">
+<table class="table">
               <thead>
                 <tr>
                   <th scope="col">sno</th>
@@ -38,25 +38,23 @@
                   <th scope="col">ACtion</th>
                 </tr>
               </thead>
-              <tbody>
+            
         {% endif %}
-        {% for todo in allTodo %}
-              <tr>
-                <th scope="row">{{loop.index}}</th>#todo.sno can also be used .when a row in db gets deleted the next row should be continue achieved through loop.index
-                <td>{{todo.title}}</td>
-                <td>{{todo.desc}}</td>
-                <td>{{todo.date_created}}</td>
-                <td><button><a href="/delete/{{todo.sno}}" class="btn btn-outline-dark">Delete</a>
-                  <td><a href="/update/{{todo.sno}}" class="btn btn-outline-dark">Update</a></td>
-                  </button></td>
-                <!-- <td>
-                  <a href="/update/((todo.SNo))" type=""button>Update</a>
-                  <a href="/delete/((todo.SNo))" type=""button>Update</a>
-                </td> -->
-              </tr>
-            </tbody>
-          </table>
-    {% endfor %}
+        <tbody>
+          {% for todo in allTodo %}
+          <tr>
+              <th scope="row">{{ loop.index }}</th>
+              <td>{{ todo.title }}</td>
+              <td>{{ todo.desc }}</td>
+              <td>{{ todo.date_created }}</td>
+              <td>
+                  <a href="/delete/{{ todo.sno }}" class="btn btn-outline-dark">Delete</a>
+                  <a href="/update/{{ todo.sno }}" class="btn btn-outline-dark">Update</a>
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
      </div>
     <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

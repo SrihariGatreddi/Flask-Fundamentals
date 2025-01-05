@@ -33,10 +33,27 @@ def hello_world():
     return render_template('index.html' ,allTodo=allTodo)           #all to objects are displayed on web through html file
 
 
-@app.route('/update/<int:sno>')
+@app.route('/update/<int:sno>', methods=['GET', 'POST'])
 def update(sno):
-    todo=Todo.query.filter_by(sno=sno).first()
-    return render_template("update.html",todo=todo)
+    # Check if the method is POST (form submission)
+    if request.method == "POST":
+        title = request.form['title']
+        desc = request.form['desc']
+        
+        # Fetch the Todo item to update
+        todo = Todo.query.filter_by(sno=sno).first()
+        if todo:
+            # Update the fields
+            todo.title = title
+            todo.desc = desc
+            db.session.commit()  # Save changes to the database
+        
+        return redirect('/')  # Redirect to home page or another page after updating
+    
+    # Handle the GET request (display the form with existing data)
+    todo = Todo.query.filter_by(sno=sno).first()
+    return render_template("update.html", todo=todo)
+
 @app.route('/delete/<int:sno>')
 def delete(sno):
     todo = Todo.query.filter_by(sno=sno).first()
