@@ -1,4 +1,4 @@
-from flask import Flask, render_template,request
+from flask import Flask, render_template,request,redirect
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timezone
 
@@ -23,25 +23,34 @@ class Todo(db.Model):#class name could be anything here Todo is the class name
 @app.route("/",methods=['GET','POST'])
 def hello_world():
     if request.method=="POST":
-        
-        
-        
-    todo =Todo(title="First Todo", desc="Start Investing in Stocks")#an instance of Todo class created
-    db.session.add(todo)                                            #and added to the active session 
-    db.session.commit()                                              #changes are saved
+        title =request.form['title']
+        desc=request.form['desc']
+        todo =Todo(title=title, desc=desc)#an instance of Todo class created
+        db.session.add(todo)                                            #and added to the active session 
+        db.session.commit()     
+        #changes are saved
     allTodo=Todo.query.all()                                        #all the objects/rows of the database is quiered and stored using Todo.queryall()
     return render_template('index.html' ,allTodo=allTodo)           #all to objects are displayed on web through html file
 
 
-@app.route('/show')
-def products():
-    allTodo=Todo.query.all()
-    print(allTodo)
-    return 'this is product page'
+@app.route('/update/<int:sno>')
+def update(sno):
+    todo=Todo.query.filter_by(sno=sno).first()
+    return render_template("update.html",todo=todo)
+@app.route('/delete/<int:sno>')
+def delete(sno):
+    todo = Todo.query.filter_by(sno=sno).first()
+    if not todo:
+        return "Todo not found", 404
+    db.session.delete(todo)
+    db.session.commit()
+    return redirect("/")
 
-
+     
 if __name__ == "__main__":
     # Ensure database tables are created in the application context
     with app.app_context():
         db.create_all()  # Create tables if they don't already exist
+    app.run(debug=True)
+if __name__ == "__main__":
     app.run(debug=True)
